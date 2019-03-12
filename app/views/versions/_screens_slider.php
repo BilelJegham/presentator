@@ -17,10 +17,13 @@ $activeScreenId       = isset($activeScreenId) ? $activeScreenId : null;
 
 if ($model->type == Version::TYPE_TABLET) {
     $type = 'tablet';
+    $device = "ipad";    
 } elseif ($model->type == Version::TYPE_MOBILE) {
     $type = 'mobile';
+    $device = "iphone-x";
 } else {
     $type = 'desktop';
+    $device = "macbook";
 }
 
 $generalSlideStyles = [];
@@ -145,59 +148,78 @@ $isGuest      = Yii::$app->user->isGuest;
                     // hotspots
                     $hotspots = $screen->hotspots ? json_decode($screen->hotspots, true) : [];
                 ?>
-                <div class="slider-item screen <?= $isActive ? 'active' : ''?>"
-                    data-original-scale-factor="<?= $scaleFactor ?>"
-                    data-scale-factor="<?= $scaleFactor ?>"
-                    data-screen-id="<?= $screen->id ?>"
-                    data-alignment="<?= $align ?>"
-                    data-title="<?= Html::encode($screen->title) ?>"
-                    style="<?= Html::cssStyleFromArray(array_merge($generalSlideStyles, ['background' => $background])) ?>"
-                >
-                    <figure class="img-wrapper hotspot-layer-wrapper">
-                        <img class="img lazy-load hotspot-layer"
-                            alt="<?= Html::encode($screen->title) ?>"
-                            width="<?= $width ?>px"
-                            height="<?= $height ?>px"
-                            data-original-width="<?= $originalWidth ?>"
-                            data-original-height="<?= $originalHeight ?>"
-                            data-src="<?= $screen->imageUrl ?>"
-                            data-priority="<?= $isActive ? 'high' : 'medium' ?>"
-                        >
-
-                        <!-- Hotspots -->
-                        <div id="hotspots_wrapper">
-                            <?php foreach ($hotspots as $id => $spot): ?>
-                                <?= $this->render('_hotspot_item', [
-                                    'id'           => $id,
-                                    'spot'         => $spot,
-                                    'scaleFactor'  => $scaleFactor,
-                                    'showControls' => true,
-                                    'maxX'         => $width,
-                                    'maxY'         => $height,
-                                ]); ?>
-                            <?php endforeach ?>
+                      <div class="marvel-device <?= $device?>">
+                         <div class="top-bar"></div>
+                        <div class="inner"></div>
+                        <div class="overflow">
+                            <div class="shadow"></div>
                         </div>
+                        <div class="speaker"></div>
+                        <div class="sensors"></div>
+                        <div class="more-sensors"></div>
+                        <div class="sleep"></div>
+                        <div class="volume"></div>
+                        <div class="camera"></div>
+                        <div class="screen">
+                     
+                            <div class="slider-item screen <?= $isActive ? 'active' : ''?>"
+                                data-original-scale-factor="<?= $scaleFactor ?>"
+                                data-scale-factor="<?= $scaleFactor ?>"
+                                data-screen-id="<?= $screen->id ?>"
+                                data-alignment="<?= $align ?>"
+                                data-title="<?= Html::encode($screen->title) ?>"
+                                style="<?= Html::cssStyleFromArray(array_merge($generalSlideStyles, ['background' => $background])) ?>"
+                            >
+                            
+                                <figure class="img-wrapper hotspot-layer-wrapper">
+                                    <img class="img lazy-load hotspot-layer"
+                                        alt="<?= Html::encode($screen->title) ?>"
+                                        width="<?= $width ?>px"
+                                        height="<?= $height ?>px"
+                                        data-original-width="<?= $originalWidth ?>"
+                                        data-original-height="<?= $originalHeight ?>"
+                                        data-src="<?= $screen->imageUrl ?>"
+                                        data-priority="<?= $isActive ? 'high' : 'medium' ?>"
+                                    >
 
-                        <!-- Comment targets -->
-                        <div id="comment_targets_list" class="comment-targets-list">
-                            <?php foreach ($screen->screenComments as $comment): ?>
-                                <?php if (!$comment->replyTo): // we make use of the already eager loaded screenComments relation ?>
-                                    <?php
-                                        $isResolved = $comment->status == ScreenComment::STATUS_RESOLVED;
-                                        $isUnread   = in_array($comment->id, $unreadCommentTargets);
-                                    ?>
-                                    <?= $this->render('_comment_item', [
-                                        'comment'     => $comment,
-                                        'scaleFactor' => $scaleFactor,
-                                        'isUnread'    => $isUnread,
-                                        'isResolved'  => $isResolved,
-                                        'maxX'        => $width,
-                                        'maxY'        => $height,
-                                    ]); ?>
-                                <?php endif ?>
-                            <?php endforeach ?>
-                        </div>
-                    </figure>
+                                    <!-- Hotspots -->
+                                    <div id="hotspots_wrapper">
+                                        <?php foreach ($hotspots as $id => $spot): ?>
+                                            <?= $this->render('_hotspot_item', [
+                                                'id'           => $id,
+                                                'spot'         => $spot,
+                                                'scaleFactor'  => $scaleFactor,
+                                                'showControls' => true,
+                                                'maxX'         => $width,
+                                                'maxY'         => $height,
+                                            ]); ?>
+                                        <?php endforeach ?>
+                                    </div>
+
+                                    <!-- Comment targets -->
+                                    <div id="comment_targets_list" class="comment-targets-list">
+                                        <?php foreach ($screen->screenComments as $comment): ?>
+                                            <?php if (!$comment->replyTo): // we make use of the already eager loaded screenComments relation ?>
+                                                <?php
+                                                    $isResolved = $comment->status == ScreenComment::STATUS_RESOLVED;
+                                                    $isUnread   = in_array($comment->id, $unreadCommentTargets);
+                                                ?>
+                                                <?= $this->render('_comment_item', [
+                                                    'comment'     => $comment,
+                                                    'scaleFactor' => $scaleFactor,
+                                                    'isUnread'    => $isUnread,
+                                                    'isResolved'  => $isResolved,
+                                                    'maxX'        => $width,
+                                                    'maxY'        => $height,
+                                                ]); ?>
+                                            <?php endif ?>
+                                        <?php endforeach ?>
+                                    </div>
+                                </figure>
+                            </div>
+                            <div class="home"></div>
+                     <div class="bottom-bar"></div>
+                    </div>
                 </div>
             <?php endforeach ?>
         </div>

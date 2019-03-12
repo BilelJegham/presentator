@@ -15,6 +15,7 @@ class AppAsset extends AssetBundle
         'css/jquery-ui.min.css',
         'css/color-picker.min.css',
         'css/style.css',
+        'css/devices.min.css',
     ];
 
     public $js = [
